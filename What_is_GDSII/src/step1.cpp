@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <iomanip>
 
-// レコードタイプの定義
 enum class record_type : uint8_t {
   HEADER = 0,
   BGNLIB = 1,
@@ -105,8 +104,8 @@ int main() {
 
   uint8_t buffer[4];
   int record_count = 0;
-  int max_records = 100;  // 最初の100レコードを表示
-
+  int max_records = 100;
+  
   while (ifs.read(reinterpret_cast<char*>(buffer), 4)) {
     uint16_t record_length = (static_cast<uint16_t>(buffer[0]) << 8) | 
                              static_cast<uint16_t>(buffer[1]);
@@ -120,7 +119,6 @@ int main() {
                 << std::setw(12) << data_type_to_string(dtype) << "\n";
     }
 
-    // ペイロード部分をスキップ
     ifs.seekg(record_length - 4, std::ios::cur);
     record_count++;
   }
