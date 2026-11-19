@@ -1,14 +1,14 @@
 # サンプルの内容と表示形式はここで編集する。
 set sampleXml {<?xml version='1.0' encoding='UTF-8'?>
-<report title="MDP 依頼内容">
-  <box title="対象レイヤー">L01</box>
-  <box title="入力形式">OASIS</box>
-  <box title="処理フロー">標準フロー</box>
-  <box title="優先度" mark="review" reason="納期が前倒しになったため、「通常」から「高」に変更する。">通常</box>
-  <box title="MDP担当">設計チーム</box>
-  <box title="MRC結果">確認済み</box>
-  <box title="出力形式">OASIS</box>
-  <box title="レビュー状況">未確認</box>
+<report title="野菜屋の仕入れ伝票">
+  <box title="品名">トマト</box>
+  <box title="仕入れ先">ひなた農園</box>
+  <box title="仕入れ数量" mark="review" reason="週末の特売に合わせて、3箱から5箱に増やす。">3箱</box>
+  <box title="規格">Mサイズ</box>
+  <box title="入荷予定">金曜日の朝</box>
+  <box title="受け取り場所">店舗裏口</box>
+  <box title="保管場所">青果用冷蔵庫</box>
+  <box title="用途">週末の特売</box>
 </report>}
 
 set reportXsl {<?xml version="1.0" encoding="UTF-8"?>
