@@ -28,18 +28,27 @@ wm title . "XML レビュー"
 wm geometry . 1080x720
 wm minsize . 560 360
 ttk::style configure Comment.TLabel -font TkHeadingFont
-ttk::frame .report -padding 4
-place .report -relwidth 1 -relheight 0.8
-html .report.doc -yscrollcommand {.report.bar set}
-ttk::scrollbar .report.bar -command {.report.doc yview}
-pack .report.bar -side right -fill y
-pack .report.doc -fill both -expand 1
-if {[catch {.report.doc parse -final [render $filename [file join $base report.xsl]]} reason]} {
+frame .header -background #17324d -padx 18 -pady 9
+label .header.title -text "XML レビュー" -font TkHeadingFont -foreground white -background #17324d
+label .header.file -text [file tail $filename] -foreground #dbebf5 -background #17324d
+pack .header.title -side left
+pack .header.file -side right
+pack .header -side top -fill x
+frame .body
+pack .body -fill both -expand 1
+
+ttk::frame .body.report -padding 4
+place .body.report -relwidth 1 -relheight 0.8
+html .body.report.doc -yscrollcommand {.body.report.bar set}
+ttk::scrollbar .body.report.bar -command {.body.report.doc yview}
+pack .body.report.bar -side right -fill y
+pack .body.report.doc -fill both -expand 1
+if {[catch {.body.report.doc parse -final [render $filename [file join $base report.xsl]]} reason]} {
     fail "[file tail $filename] を表示できない。\n$reason"
 }
 
 foreach side {left right} caption {修正内容 コメント} x {0 0.5} {
-    set foot .comment_$side
+    set foot .body.comment_$side
     ttk::frame $foot -padding 6
     place $foot -relx $x -rely 0.8 -relwidth 0.5 -relheight 0.2
     ttk::label $foot.title -style Comment.TLabel -text $caption
@@ -51,7 +60,7 @@ foreach side {left right} caption {修正内容 コメント} x {0 0.5} {
     pack $foot.input -fill both -expand 1
 }
 set notes {}
-foreach box [.report.doc search {div.review}] {
+foreach box [.body.report.doc search {div.review}] {
     set title [$box attribute data-title]
     set reason [$box attribute data-reason]
     if {$reason eq ""} {
@@ -60,5 +69,5 @@ foreach box [.report.doc search {div.review}] {
         lappend notes "${title}：$reason"
     }
 }
-.comment_left.input insert 1.0 [join $notes "\n"]
+.body.comment_left.input insert 1.0 [join $notes "\n"]
 wm deiconify .
