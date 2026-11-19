@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<report title="野菜屋の仕入れ伝票">
+  <box title="品名">トマト</box>
+  <box title="仕入れ先">ひなた農園</box>
+  <review title="仕入れ数量" reason="週末の特売に合わせて、3箱から5箱に増やす。">3箱</review>
+  <box title="規格">Mサイズ</box>
+  <box title="入荷予定">金曜日の朝</box>
+  <box title="受け取り場所">店舗裏口</box>
+  <box title="保管場所">青果用冷蔵庫</box>
+  <box title="用途">週末の特売</box>
+</report>

@@ -1,27 +1,42 @@
-# XML レビュー
+# 野菜屋の仕入れ伝票レビュー
 
-![Tk標準のグレーの固定ヘッダーの下に野菜屋の仕入れ伝票を表示した画面。仕入れ数量のマスが黄色で、左下に変更理由、右下に空のコメント欄がある。](classic-tk-review.png)
+![上段に仕入れ伝票を表示し、黄色の仕入れ数量に対応する説明を左下に表示した画面](classic-tk-review.png)
 
-固定ヘッダーにはアプリ名と内蔵サンプルまたは入力XMLのファイル名を表示する。その下の領域の上8割に、XMLをXSLで変換したHTMLを表示する。右端のスクロールバーで文書全体を閲覧できる。下部の2割は左右に等分し、左に修正内容、右に自由記入用のコメント欄を配置した。コメント欄の編集内容は終了時に破棄される。
+## 生成済みのサンプルを開く
 
-## 起動
+このフォルダーで次のコマンドを実行する。表示に必要なのは Tcl/Tk と、その環境用の Tkhtml 3。GUIはTcl/Tk 8.4を互換目標とし、8.6で動作確認した。
 
-viewer.tcl 単体でサンプルを起動できる。実行には対象のTcl/Tkで読み込めるTkhtml 3と、PATH上のxsltprocが必要。Tcl/Tk 8.4を互換目標とし、標準Tkウィジェットを使用する。GUIの確認環境は8.6で、8.4実機での起動は未確認。
-
-```bash
-wish viewer.tcl             # 内蔵のサンプルXMLを表示
-wish viewer.tcl report.xml  # 自分のXMLを表示
+```sh
+wish viewer.tcl                 # 同梱の sample.html を表示
+wish viewer.tcl order.html      # 指定したUTF-8のHTMLを表示
 ```
 
-## サンプルXMLとXSLの編集
+ヘッダーの下は全幅の伝票で、下段だけを左右に分割する。左下に修正対象の項目名と理由を表示し、右下は空欄で開く。コメントの編集は終了時に破棄される。
 
-viewer.tcl の冒頭にある `sampleXml` が入力例、`reportXsl` が変換用スタイルシート。外部XMLを指定したときも同じXSLを使う。変換用の一時ファイルは実行後に削除する。
+## XMLからHTMLを生成する
 
-## 修正箇所の指定
+入力例は `sample.xml`、表示ルールは `report.xsl`、生成結果は `sample.html`。XMLやXSLを編集したら、Pythonで再生成してからGUIで開き直す。
 
-対象のboxにmark="review"を付け、reasonに修正内容を書く。上段には現在の値が表示され、左下には項目名と修正内容がXML順に並ぶ。指定のないマスは白色になる。
+```sh
+python3 -m pip install lxml
+python3 generate_html.py
+wish viewer.tcl
+```
+
+ファイルを指定する場合は次のように実行する。
+
+```sh
+python3 generate_html.py order.xml --xsl report.xsl -o order.html
+wish viewer.tcl order.html
+```
+
+## 黄色にするタグ
+
+`report` 直下の通常項目は `box`、修正対象は `review` で囲む。XSLが修正対象の背景を黄色にし、項目名と理由をHTMLに埋め込む。複数の修正対象は左下に伝票順で並ぶ。従来の `<box mark="review">` も利用できる。
 
 ```xml
-<box title="仕入れ数量" mark="review"
-     reason="週末の特売に合わせて、3箱から5箱に増やす。">3箱</box>
+<report title="野菜屋の仕入れ伝票">
+  <box title="品名">トマト</box>
+  <review title="仕入れ数量" reason="週末の特売に合わせて、3箱から5箱に増やす。">3箱</review>
+</report>
 ```
