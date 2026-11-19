@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<report title="変更後">
+  <box title="対象レイヤー">L01</box>
+  <box title="入力形式">OASIS</box>
+  <box title="処理フロー">標準フロー</box>
+  <box title="優先度" mark="review">高（要確認）</box>
+  <box title="MDP担当">設計チーム</box>
+  <box title="MRC結果" mark="ok">確認済み</box>
+  <box title="出力形式">OASIS</box>
+  <box title="レビュー状況">未確認</box>
+</report>
