@@ -14,11 +14,10 @@
     <xsl:variable name="background">
       <xsl:choose>
         <xsl:when test="@mark='review'">#fff1c2</xsl:when>
-        <xsl:when test="@mark='ok'">#dff3e8</xsl:when>
         <xsl:otherwise>#ffffff</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <div class="box {@mark}" style="margin:0 0 12px; padding:12px; border:1px solid #bbc7cf; background-color:{$background}">
+    <div class="box {@mark}" data-title="{@title}" data-reason="{@reason}" style="margin:0 0 12px; padding:12px; border:1px solid #bbc7cf; background-color:{$background}">
       <h2 style="margin:0; font-size:17px"><xsl:value-of select="@title"/></h2>
       <p style="margin:6px 0 0"><xsl:value-of select="."/></p>
     </div>

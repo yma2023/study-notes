@@ -1,16 +1,23 @@
 # XML レビュー
 
-![変更前と変更後のXMLを左右に表示した画面。右側で優先度が黄色、MRC結果が緑色に強調され、下部にコメント欄がある。](screenshot.png)
+![上部に1枚のMDP依頼内容を表示した画面。優先度のマスが黄色で、左下に変更理由、右下に空のコメント欄がある。](screenshot.png)
 
-Tcl/Tk 8.6、同じ Tcl 環境から読み込める Tkhtml 3、PATH 上の xsltproc が必要。
-展開したフォルダーで次を実行する。
+画面上部の8割に、XMLをXSLで変換したHTMLを表示する。右端のスクロールバーで文書全体を閲覧できる。下部の2割は左右に等分し、左に修正内容、右に自由記入用のコメント欄を配置した。コメント欄の編集内容は終了時に破棄される。
 
-    wish viewer.tcl
+## 起動
 
-自分の XML を左右に表示する場合は順番に指定する。
+Tcl/Tk 8.6、同じTcl環境から読み込めるTkhtml 3、PATH上のxsltprocが必要。xml-viewerフォルダーで起動する。
 
-    wish viewer.tcl before.xml after.xml
+```bash
+wish viewer.tcl             # 同梱のsample.xmlを表示
+wish viewer.tcl report.xml  # 自分のXMLを表示
+```
 
-XML の構造は left.xml と right.xml を参照。report の title がページ名、box の title が見出し、要素の本文が内容となる。
-各 box に mark="review" を付けると黄色、mark="ok" で緑色になる。省略時は白色。配色は report.xsl の background 変数で変更する。
-左右のスクロールバーで個別に閲覧できる。コメントは画面を閉じると消える。
+## 修正箇所の指定
+
+対象のboxにmark="review"を付け、reasonに修正内容を書く。上段には現在の値が表示され、左下には項目名と修正内容がXML順に並ぶ。指定のないマスは白色になる。
+
+```xml
+<box title="優先度" mark="review"
+     reason="納期が前倒しになったため、「通常」から「高」に変更する。">通常</box>
+```
