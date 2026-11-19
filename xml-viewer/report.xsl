@@ -6,12 +6,12 @@
       <head><title><xsl:value-of select="@title"/></title></head>
       <body style="margin:22px; color:#20334a; background-color:#f5f7fa; font-family:sans-serif">
         <h1 style="font-size:24px"><xsl:value-of select="@title"/></h1>
-        <xsl:apply-templates select="box | review"/>
+        <xsl:apply-templates select="box"/>
       </body>
     </html>
   </xsl:template>
-  <xsl:template match="box | review">
-    <xsl:variable name="flagged" select="self::review or @mark='review'"/>
+  <xsl:template match="box">
+    <xsl:variable name="flagged" select="@mark='review'"/>
     <xsl:variable name="background">
       <xsl:choose>
         <xsl:when test="$flagged">#fff1c2</xsl:when>

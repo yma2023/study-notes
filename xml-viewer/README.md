@@ -30,13 +30,20 @@ python3 generate_html.py order.xml --xsl report.xsl -o order.html
 wish viewer.tcl order.html
 ```
 
-## 黄色にするタグ
+## Pythonによる自動チェック
 
-`report` 直下の通常項目は `box`、修正対象は `review` で囲む。XSLが修正対象の背景を黄色にし、項目名と理由をHTMLに埋め込む。複数の修正対象は左下に伝票順で並ぶ。従来の `<box mark="review">` も利用できる。
+入力XMLには伝票に記載された値を書く。
 
 ```xml
-<report title="野菜屋の仕入れ伝票">
-  <box title="品名">トマト</box>
-  <review title="仕入れ数量" reason="週末の特売に合わせて、3箱から5箱に増やす。">3箱</review>
-</report>
+<box title="仕入れ数量">3箱</box>
 ```
+
+`generate_html.py` 冒頭の `EXPECTED_VALUES` に、このサンプルの基準として「仕入れ数量は5箱」と定義した。Pythonは項目名で基準を引き、前後の空白を除いた値を文字列として比較する。
+
+| XMLの仕入れ数量 | 生成されるHTML | GUIの左下 |
+|---|---|---|
+| 3箱 | 3箱のマスが黄色 | 仕入れ数量：伝票は「3箱」、基準は「5箱」。 |
+| 5箱 | 5箱のマスが白 | 指摘なし |
+| 項目自体がない | 末尾に黄色の「未記載」マスを追加 | 仕入れ数量：項目が未記載。基準は「5箱」。 |
+
+基準に含めた項目をチェックする。色と指摘はHTMLを生成するたびに再計算し、入力XMLは書き換えない。`sample.xml` の「3箱」を「5箱」に変えて再生成すると、仕入れ数量の指摘が消える。
